@@ -2,4 +2,17 @@ main{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+
+}
+
+.artistImage{
+    width: 15em;
+    height:15em;
+    border-radius: 10em;
+}
+
+
+ol{
+    height: 12em;
+    overflow: auto;
 }
