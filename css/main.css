@@ -2,16 +2,40 @@ main{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+
 }
 
-.artistImage{
-    width: 15em;
-    height:15em;
-    border-radius: 10em;
+section{
+    width: 33%;
+    text-align: center;
 }
 
+label{
+    display: block;
+}
 
 ol{
     height: 12em;
+    text-align: left;
     overflow: auto;
+}
+
+.artistImage{
+    width: 9em;
+    height: 9em;
+    border-radius: 10em;
+}
+
+#albumList{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.albumDiv{
+    margin: 1em;
+}
+
+.albumImage{
+    width: 13em;
 }
