@@ -15,8 +15,17 @@ label{
 }
 
 ol{
-    height: 12em;
     text-align: left;
+}
+
+#trackList{
+    margin-top: 5em;
+    height: 40em;
+    overflow: auto;
+}
+
+#artistsAlbums{
+    height: 12em;
     overflow: auto;
 }
 
