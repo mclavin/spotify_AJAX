@@ -135,7 +135,7 @@ var Module = (function(){
         let track = document.getElementById("trackName").value;
 
         let trackRes = $.ajax({
-            url: `https://api.spotify.com/v1/search?q=track:${track}&limit=50&type=track`,
+            url: `https://api.spotify.com/v1/search?q=${track}&limit=50&type=track`,
             success: function () {
                 let tracks = trackRes.responseJSON.tracks.items;
                 let trackList = document.getElementById("trackList");
