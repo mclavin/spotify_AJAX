@@ -6,78 +6,102 @@
 var Module = (function(){
     let getArtist = () => {
         let artist = document.getElementById("artistName").value;
-
-        let artistRes = $.ajax({
-                url:  `https://api.spotify.com/v1/search?q=${artist}&type=artist`,
-                success: () => {
-
-                let artistId = artistRes.responseJSON.artists.items[0].id;
-        let artistDiv = document.getElementById("theArtist");
-        artistDiv.innerHTML = "";
-
-        let artistName = document.createElement("h3");
-        let artistNode = document.createTextNode(artistRes.responseJSON.artists.items[0].name);
-        artistName.appendChild(artistNode);
-        artistDiv.appendChild(artistName);
-
-        let img = document.createElement("img");
-        img.setAttribute("class", "artistImage");
-        img.src = artistRes.responseJSON.artists.items[0].images[1].url;
-        artistDiv.appendChild(img);
-
-        /**
-         * MOAR GET
-         * @type {string}
-         */
-        let findArtistsTopTracks = $.ajax({
-                url: `https://api.spotify.com/v1/artists/${artistId}/top-tracks?country=SE`,
-                success: () => {
-                let tracks = findArtistsTopTracks.responseJSON.tracks;
         let trackList = document.getElementById("artistsTopTracks");
+        selectedArtist.innerHTML = "";
         trackList.innerHTML = "";
-        for(let i = 0; i < tracks.length; i++){
-            let trackLink = document.createElement("a");
-            console.log(tracks[i]);
-            trackLink.href = tracks[i].external_urls.spotify;
-            let trackLi = document.createElement("li");
-            let trackNode = document.createTextNode(tracks[i].name);
-            trackLink.appendChild(trackNode);
-            trackLi.appendChild(trackLink);
-            trackList.appendChild(trackLi);
-        }
-    }
-    });
+        let albumList = document.getElementById("artistsAlbums");
+        albumList.innerHTML = "";
+        let artistRes = $.ajax({
+            url:  `https://api.spotify.com/v1/search?q=artist:${artist}&type=artist`,
+            success: () => {
 
-        let findArtistAlbums = $.ajax({
-            //https://api.spotify.com/v1/artists/${artistId}/albums?market=ES&album_type=single&limit=2
-            url: `https://api.spotify.com/v1/artists/${artistId}/albums?market=SE&album_type=album`,
-            success: function () {
-                console.log(findArtistAlbums);
-                let albumList = document.getElementById("artistsAlbums");
-                albumList.innerHTML = "";
-                for(let i = 0; i < findArtistAlbums.responseJSON.items.length; i++){
-                    let albumNode = document.createTextNode(findArtistAlbums.responseJSON.items[i].name);
-                    let albumLi = document.createElement("li");
-                    let albumLink = document.createElement("a");
-                    albumLink.href = findArtistAlbums.responseJSON.items[i].external_urls.spotify;
+                let artists = artistRes.responseJSON.artists.items;
+                let artistList = document.getElementById("artistList");
+                artistList.innerHTML = "";
 
-                    albumLink.appendChild(albumNode);
-                    albumLi.appendChild(albumLink);
-                    albumList.appendChild(albumLi);
+                var artistIdArr = [];
+                var artistNameArr = [];
+
+                for(let i = 0; i < artists.length; i++){
+                    let artistDiv = document.createElement("div");
+                    artistDiv.setAttribute("id", "artistDiv");
+                    artistList.appendChild(artistDiv);
+
+                    let artistImg = document.createElement("img");
+                    artistImg.setAttribute("class", "artistImage");
+                    artistImg.src = artists[i].images[1].url;
+                    artistImg.addEventListener("click", printArtistStuff);
+                    artistDiv.appendChild(artistImg);
+
+                    let artistName = document.createTextNode(artists[i].name);
+                    let artistNode = document.createElement("h3");
+                    artistNode.appendChild(artistName);
+                    artistDiv.appendChild(artistNode);
+
+                    artistNameArr.push(artistName);
+                    artistIdArr.push(artists[i].id);
                 }
+
+                function printArtistStuff () {
+                    let selectedArtist = document.getElementById("selectedArtist");
+                    selectedArtist.innerHTML = this.parentNode.innerHTML;
+                    artistList.innerHTML = "";
+
+
+                    for(let i = 0; i < artistNameArr.length; i++){
+                        //console.log(this.nextSibling.innerHTML);
+                        //console.log(artistNameArr[i].nodeValue);
+                        if(artistNameArr[i].nodeValue === this.nextSibling.innerHTML){
+                            let artistId = artistIdArr[i];
+
+                            let findArtistsTopTracks = $.ajax({
+                                url: `https://api.spotify.com/v1/artists/${artistId}/top-tracks?country=SE`,
+                                success: () => {
+                                    let tracks = findArtistsTopTracks.responseJSON.tracks;
+                                    trackList.innerHTML = "";
+                                    for(let i = 0; i < tracks.length; i++){
+                                        let trackLink = document.createElement("a");
+                                        console.log(tracks[i]);
+                                        trackLink.href = tracks[i].external_urls.spotify;
+                                        let trackLi = document.createElement("li");
+                                        let trackNode = document.createTextNode(tracks[i].name);
+                                        trackLink.appendChild(trackNode);
+                                        trackLi.appendChild(trackLink);
+                                        trackList.appendChild(trackLi);
+                                    }
+                                }
+                            });
+
+                            let findArtistAlbums = $.ajax({
+                                url: `https://api.spotify.com/v1/artists/${artistId}/albums?market=SE&album_type=album`,
+                                success: function () {
+                                    console.log(findArtistAlbums);
+                                    for(let i = 0; i < findArtistAlbums.responseJSON.items.length; i++){
+                                        let albumNode = document.createTextNode(findArtistAlbums.responseJSON.items[i].name);
+                                        let albumLi = document.createElement("li");
+                                        let albumLink = document.createElement("a");
+                                        albumLink.href = findArtistAlbums.responseJSON.items[i].external_urls.spotify;
+
+                                        albumLink.appendChild(albumNode);
+                                        albumLi.appendChild(albumLink);
+                                        albumList.appendChild(albumLi);
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                }
+
             }
         });
-
-
-    }
-    });
     }
 
     let getAlbum = () => {
         let album = document.getElementById("albumName").value;
 
         let albumRes = $.ajax({
-            url: `https://api.spotify.com/v1/search?q=album:${album}&type=album`,
+            url: `https://api.spotify.com/v1/search?q=${album}&type=album`,
             success: function () {
                 let albumList = document.getElementById("albumList");
                 albumList.innerHTML = "";
@@ -89,18 +113,11 @@ var Module = (function(){
                     let albumImage = document.createElement("img");
                     albumImage.src = albumRes.responseJSON.albums.items[i].images[0].url;
                     albumImage.setAttribute("class", "albumImage");
-                    console.log(albumRes.responseJSON.albums.items[i]);
                     let albumLink = document.createElement("a");
                     albumLink.href = albumRes.responseJSON.albums.items[i].external_urls.spotify;
 
                     let albumL = document.createElement("label");
                     let albumName = document.createTextNode(albumRes.responseJSON.albums.items[i].name);
-                    /**
-                     * funkar inte
-                     if(albumName.length > 25){
-                        albumName.substring(0,1);
-                    }
-                     */
 
                     albumL.appendChild(albumName);
                     albumLink.appendChild(albumImage);
@@ -108,8 +125,6 @@ var Module = (function(){
                     albumDiv.appendChild(albumL);
                     albumList.appendChild(albumDiv);
 
-
-                    console.log(albumRes.responseJSON.albums.items[i]);
                 }
 
             }
@@ -124,6 +139,8 @@ var Module = (function(){
             success: function () {
                 let tracks = trackRes.responseJSON.tracks.items;
                 let trackList = document.getElementById("trackList");
+                trackList.innerHTML = "";
+
                 for (let i = 0; i < tracks.length; i++){
                     let trackLi = document.createElement("li");
 
@@ -133,12 +150,21 @@ var Module = (function(){
                     let trackL = document.createElement("label");
                     let trackName = document.createTextNode(tracks[i].name);
 
+                    let artistL = document.createElement("label");
+                    let artistName = document.createTextNode(tracks[i].artists[0].name);
+
+                    let trackContainer = document.createElement("div");
+                    trackContainer.setAttribute("id", "trackContainer");
+
                     trackL.appendChild(trackName);
                     trackLink.appendChild(trackL);
-                    trackLi.appendChild(trackLink);
+                    trackContainer.appendChild(trackLink);
+                    artistL.appendChild(artistName);
+                    trackContainer.appendChild(artistL);
+                    trackLi.appendChild(trackContainer);
                     trackList.appendChild(trackLi);
-                }
 
+                }
             }
         })
     }

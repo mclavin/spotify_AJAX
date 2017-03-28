@@ -1,8 +1,83 @@
+body{
+    font-family: "Arial";
+    background-color: #161616;
+    color: #ffffff;
+}
+
+input{
+    border-radius: 1em;
+    border: none;
+    height: 1.5em
+}
+
+button{
+    width:6em;
+    color: #ffffff;
+    height: 1.8em;
+    border-radius: 1em;
+    border: none;
+    background-color: #1DB954;
+    transition: all 0.2s ease;
+}
+
+button:hover{
+    box-shadow: inset 0 0 0 2px #ffffff;
+
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+img{
+    transition: all 0.3s ease;
+}
+
+img:hover{
+    -webkit-filter: opacity(0.5) saturate(2);
+}
+
+#albumList{
+    margin-top: 3em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-height: 40em;
+    overflow: auto;
+}
+
+#artistList{
+    max-height: 40em;
+    overflow: auto;
+    margin-top:4em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#trackList{
+    margin-top: 4em;
+    height: 40em;
+    overflow: auto;
+}
+
+#artistDiv{
+    margin: 0 2em 1em 2em;
+}
+
+li{
+    color: darkgray;
+}
+
+li:hover{
+    color: #ffffff;
+}
+
 main{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-
 }
 
 section{
@@ -18,14 +93,8 @@ ol{
     text-align: left;
 }
 
-#trackList{
-    margin-top: 5em;
-    height: 40em;
-    overflow: auto;
-}
-
 #artistsAlbums{
-    height: 12em;
+    max-height: 12em;
     overflow: auto;
 }
 
@@ -48,3 +117,31 @@ ol{
 .albumImage{
     width: 13em;
 }
+
+#trackList{
+    list-style-type: disc;
+    text-align: left;
+}
+
+#trackList li {
+    padding: 0.5em 0 0.5em 0.5em;
+}
+
+@media screen and (max-width: 768px){
+    main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    section{
+        width: 100%;
+        text-align: center;
+    }
+
+    .trackList{
+        width: 50%;
+        margin: 0 40% 0 30%;
+    }
+
+}
+
