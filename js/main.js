@@ -7,11 +7,12 @@ var Module = (function(){
     let getArtist = () => {
         let artist = document.getElementById("artistName").value;
         let trackList = document.getElementById("artistsTopTracks");
+        selectedArtist.innerHTML = "";
         trackList.innerHTML = "";
         let albumList = document.getElementById("artistsAlbums");
         albumList.innerHTML = "";
         let artistRes = $.ajax({
-            url:  `https://api.spotify.com/v1/search?q=${artist}&type=artist`,
+            url:  `https://api.spotify.com/v1/search?q=artist:${artist}&type=artist`,
             success: () => {
 
                 let artists = artistRes.responseJSON.artists.items;
@@ -23,6 +24,7 @@ var Module = (function(){
 
                 for(let i = 0; i < artists.length; i++){
                     let artistDiv = document.createElement("div");
+                    artistDiv.setAttribute("id", "artistDiv");
                     artistList.appendChild(artistDiv);
 
                     let artistImg = document.createElement("img");
@@ -41,7 +43,9 @@ var Module = (function(){
                 }
 
                 function printArtistStuff () {
-                    artistList.innerHTML = this.parentNode.innerHTML;
+                    let selectedArtist = document.getElementById("selectedArtist");
+                    selectedArtist.innerHTML = this.parentNode.innerHTML;
+                    artistList.innerHTML = "";
 
 
                     for(let i = 0; i < artistNameArr.length; i++){
@@ -97,7 +101,7 @@ var Module = (function(){
         let album = document.getElementById("albumName").value;
 
         let albumRes = $.ajax({
-            url: `https://api.spotify.com/v1/search?q=album:${album}&type=album`,
+            url: `https://api.spotify.com/v1/search?q=${album}&type=album`,
             success: function () {
                 let albumList = document.getElementById("albumList");
                 albumList.innerHTML = "";
@@ -109,18 +113,11 @@ var Module = (function(){
                     let albumImage = document.createElement("img");
                     albumImage.src = albumRes.responseJSON.albums.items[i].images[0].url;
                     albumImage.setAttribute("class", "albumImage");
-                    console.log(albumRes.responseJSON.albums.items[i]);
                     let albumLink = document.createElement("a");
                     albumLink.href = albumRes.responseJSON.albums.items[i].external_urls.spotify;
 
                     let albumL = document.createElement("label");
                     let albumName = document.createTextNode(albumRes.responseJSON.albums.items[i].name);
-                    /**
-                     * funkar inte
-                     if(albumName.length > 25){
-                        albumName.substring(0,1);
-                    }
-                     */
 
                     albumL.appendChild(albumName);
                     albumLink.appendChild(albumImage);
@@ -128,8 +125,6 @@ var Module = (function(){
                     albumDiv.appendChild(albumL);
                     albumList.appendChild(albumDiv);
 
-
-                    console.log(albumRes.responseJSON.albums.items[i]);
                 }
 
             }
@@ -140,10 +135,12 @@ var Module = (function(){
         let track = document.getElementById("trackName").value;
 
         let trackRes = $.ajax({
-            url: `https://api.spotify.com/v1/search?q=${track}&limit=50&type=track`,
+            url: `https://api.spotify.com/v1/search?q=track:${track}&limit=50&type=track`,
             success: function () {
                 let tracks = trackRes.responseJSON.tracks.items;
                 let trackList = document.getElementById("trackList");
+                trackList.innerHTML = "";
+
                 for (let i = 0; i < tracks.length; i++){
                     let trackLi = document.createElement("li");
 
@@ -153,10 +150,20 @@ var Module = (function(){
                     let trackL = document.createElement("label");
                     let trackName = document.createTextNode(tracks[i].name);
 
+                    let artistL = document.createElement("label");
+                    let artistName = document.createTextNode(tracks[i].artists[0].name);
+
+                    let trackContainer = document.createElement("div");
+                    trackContainer.setAttribute("id", "trackContainer");
+
                     trackL.appendChild(trackName);
                     trackLink.appendChild(trackL);
-                    trackLi.appendChild(trackLink);
+                    trackContainer.appendChild(trackLink);
+                    artistL.appendChild(artistName);
+                    trackContainer.appendChild(artistL);
+                    trackLi.appendChild(trackContainer);
                     trackList.appendChild(trackLi);
+
                 }
             }
         })
