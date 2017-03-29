@@ -2,6 +2,8 @@ body{
     font-family: "Arial";
     background-color: #161616;
     color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
 
 input{
@@ -93,6 +95,10 @@ ol{
     text-align: left;
 }
 
+#artistDiv a:hover{
+    text-decoration: underline;
+}
+
 #artistsAlbums{
     max-height: 12em;
     overflow: auto;
@@ -127,6 +133,10 @@ ol{
     padding: 0.5em 0 0.5em 0.5em;
 }
 
+#trackContainer a:hover{
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 768px){
     main{
         display: flex;
@@ -143,5 +153,14 @@ ol{
         margin: 0 40% 0 30%;
     }
 
+}
+#error{
+    background-color: darkred;
+    width: 100%;
+    text-align: center;
+}
+
+#error p{
+    padding: 0.5em 0 0.5em 0;
 }
 
