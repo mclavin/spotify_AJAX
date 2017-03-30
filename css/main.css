@@ -2,6 +2,8 @@ body{
     font-family: "Arial";
     background-color: #161616;
     color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
 
 input{
@@ -26,8 +28,12 @@ button:hover{
 }
 
 a{
+    color: #ffffff;
     text-decoration: none;
-    color: inherit;
+}
+
+a:hover{
+    text-decoration: underline;
 }
 
 img{
@@ -66,14 +72,6 @@ img:hover{
     margin: 0 2em 1em 2em;
 }
 
-li{
-    color: darkgray;
-}
-
-li:hover{
-    color: #ffffff;
-}
-
 main{
     display: flex;
     flex-direction: row;
@@ -91,6 +89,9 @@ label{
 
 ol{
     text-align: left;
+}
+
+#artistDiv a:hover{
 }
 
 #artistsAlbums{
@@ -127,6 +128,8 @@ ol{
     padding: 0.5em 0 0.5em 0.5em;
 }
 
+
+
 @media screen and (max-width: 768px){
     main{
         display: flex;
@@ -143,5 +146,14 @@ ol{
         margin: 0 40% 0 30%;
     }
 
+}
+#error{
+    background-color: darkred;
+    width: 100%;
+    text-align: center;
+}
+
+#error p{
+    padding: 0.5em 0 0.5em 0;
 }
 
