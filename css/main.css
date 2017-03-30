@@ -28,8 +28,12 @@ button:hover{
 }
 
 a{
+    color: #ffffff;
     text-decoration: none;
-    color: inherit;
+}
+
+a:hover{
+    text-decoration: underline;
 }
 
 img{
@@ -68,14 +72,6 @@ img:hover{
     margin: 0 2em 1em 2em;
 }
 
-li{
-    color: darkgray;
-}
-
-li:hover{
-    color: #ffffff;
-}
-
 main{
     display: flex;
     flex-direction: row;
@@ -96,7 +92,6 @@ ol{
 }
 
 #artistDiv a:hover{
-    text-decoration: underline;
 }
 
 #artistsAlbums{
@@ -133,9 +128,7 @@ ol{
     padding: 0.5em 0 0.5em 0.5em;
 }
 
-#trackContainer a:hover{
-    text-decoration: underline;
-}
+
 
 @media screen and (max-width: 768px){
     main{
