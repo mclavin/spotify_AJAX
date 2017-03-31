@@ -18,6 +18,11 @@ var Module = (function(){
         selectedArtist.innerHTML = "";
         error.innerHTML = "";
 
+        let artistTrackList = document.getElementById("artistTopTracks");
+        artistTrackList.innerHTML = "";
+        let artistAlbumList = document.getElementById("artistAlbums");
+        artistAlbumList.innerHTML = "";
+
         if(artist.length > 0){
             /**
              * 2 arrayer som ska fyllas med artistnamn respektive ID
@@ -28,7 +33,12 @@ var Module = (function(){
              * request som returnerar artistobjekt via Spotify Web API
              */
             var artistRes = $.ajax({
-            url:  `https://api.spotify.com/v1/search?q=artist:${artist}&type=artist`,
+                url:  `https://api.spotify.com/v1/search?q=artist:${artist}&type=artist`,
+                statusCode: {
+                    404: () => {
+                        alert("source not found!");
+                    }
+                },
                 /**
                  * om requestet lyckas kallar vi på funktion som prinar ut lista med artister
                  */
@@ -94,9 +104,9 @@ var Module = (function(){
             let selectedArtist = document.getElementById("selectedArtist");
             selectedArtist.innerHTML = this.parentNode.innerHTML;
             let artistTrackList = document.getElementById("artistTopTracks");
-            artistTrackList.innerHTML = "";
+
             let artistAlbumList = document.getElementById("artistAlbums");
-            artistAlbumList.innerHTML = "";
+
 
             /**
              * loopar genom alla artistnamn som vi har sparat i en av våra arrayer
@@ -113,6 +123,11 @@ var Module = (function(){
                      */
                     let findArtistsTopTracks = $.ajax({
                         url: `https://api.spotify.com/v1/artists/${artistId}/top-tracks?country=SE`,
+                        statusCode: {
+                            404: () => {
+                            alert("source not found!");
+                            }
+                        },
                         success: () => {
                             /**
                              * kallar på funktion som printar ut vald artists låtar
@@ -125,6 +140,11 @@ var Module = (function(){
                      */
                     let findArtistAlbums = $.ajax({
                         url: `https://api.spotify.com/v1/artists/${artistId}/albums?market=SE&album_type=album`,
+                        statusCode: {
+                            404: () => {
+                            alert("source not found!");
+                            }
+                        },
                         success: () => {
                             /**
                              * kallar på funktion som printar ut vald artists album
@@ -198,7 +218,11 @@ var Module = (function(){
              */
             let albumRes = $.ajax({
                 url: `https://api.spotify.com/v1/search?q=${album}&type=album`,
-
+                statusCode: {
+                    404: () => {
+                    alert("source not found!");
+                    }
+                },
                 /**
                  * om requestet lyckas kallar vå på funktion som skriver
                  * ut album beroende på användarens input
@@ -281,6 +305,11 @@ var Module = (function(){
                  * om requestet lyckas kallar vi på funktion som skriver ut låtar efter
                  * användarens input
                  */
+                 statusCode: {
+                     404: () => {
+                        alert("source not found!");
+                     }
+                 },
                 success: () => {
                     printTracks(trackRes, trackDiv);
                 },
