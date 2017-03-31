@@ -52,7 +52,7 @@ var Module = (function(){
         let artists = artistRes.responseJSON.artists.items;
         let artistList = document.getElementById("artistList");
         artistList.innerHTML = "";
-
+        console.log(artists);
         /**
          * loopar genom artistarray som vi hämtade tidigare
          * skriver ut namn, bild, och skapar en div för varje artist
@@ -63,7 +63,12 @@ var Module = (function(){
             artistList.appendChild(artistDiv);
             let artistImg = document.createElement("img");
             artistImg.setAttribute("class", "artistImage");
-            artistImg.src = artists[i].images[1].url;
+            if(artists[i].images.length == 0){
+                artistImg.src = "img/unknownArtist.png"
+            }
+            else{
+                artistImg.src = artists[i].images[1].url;
+            }
             artistImg.addEventListener("click", printSelectedArtist);
             artistDiv.appendChild(artistImg);
             let artistName = document.createTextNode(artists[i].name);
@@ -267,6 +272,7 @@ var Module = (function(){
             let trackRes = $.ajax({
                 beforeSend: () => {
                     let loading = document.createElement("img");
+                    loading.setAttribute("id", "loading");
                     loading.src = "img/loading.gif";
                     trackDiv.appendChild(loading);
                 },
