@@ -9,8 +9,11 @@ var Module = (function(){
     let getArtist = () => {
         /**
          * hämtar inputfält och listor
-         * tömmer även listor
+         * tömmer även listor/containers
          */
+        let header = document.getElementById("header");
+        header.innerHTML ="";
+
         let artist = document.getElementById("artistName").value;
         selectedArtist.innerHTML = "";
         error.innerHTML = "";
@@ -178,6 +181,8 @@ var Module = (function(){
      */
     let getAlbum = () => {
         error.innerHTML = "";
+        let header = document.getElementById("header");
+        header.innerHTML ="";
         //hämtar användarsträng
         let album = document.getElementById("albumName").value;
 
@@ -248,21 +253,34 @@ var Module = (function(){
      */
     let getTracks = () => {
         error.innerHTML = "";
+        let header = document.getElementById("header");
+        header.innerHTML ="";
         //hämtar användarsträng
         let track = document.getElementById("trackName").value;
+        let trackDiv = document.getElementById("trackDiv");
+        trackDiv.innerHTML = "";
 
         if(track.length > 0) {
             /**
              * request till Spotify Web API som hämtar album baserat på användarens input
              */
             let trackRes = $.ajax({
+                beforeSend: () => {
+                    let loading = document.createElement("img");
+                    loading.src = "img/loading.gif";
+                    trackDiv.appendChild(loading);
+                },
                 url: `https://api.spotify.com/v1/search?q=${track}&limit=50&type=track`,
                 /**
                  * om requestet lyckas kallar vi på funktion som skriver ut låtar efter
                  * användarens input
                  */
                 success: () => {
-                    printTracks(trackRes);
+                    printTracks(trackRes, trackDiv);
+                },
+                complete: () => {
+                    let trackDiv = document.getElementById("trackDiv");
+                    trackDiv.removeChild(trackDiv.children[0]);
                 }
             })
         }
@@ -274,13 +292,15 @@ var Module = (function(){
     /**
      * funktionen som skriver ut låtarna
      */
-    let printTracks = (trackRes) => {
+    let printTracks = (trackRes, trackDiv) => {
 
         /**
          * hämtar listan som vi ska mata in låtar i
          * ser till att den är tom så gamla låtar inte ligger kvar
          */
-        let trackList = document.getElementById("trackList");
+        let trackList = document.createElement("ol");
+        trackList.setAttribute("class", "trackList");
+        trackList.setAttribute("id", "trackList");
         trackList.innerHTML = "";
 
         /**
@@ -290,6 +310,7 @@ var Module = (function(){
          */
         let tracks = trackRes.responseJSON.tracks.items;
         for (let i = 0; i < tracks.length; i++) {
+
             let trackLi = document.createElement("li");
             let trackLink = document.createElement("a");
             trackLink.href = tracks[i].external_urls.spotify;
@@ -310,6 +331,7 @@ var Module = (function(){
             trackLi.appendChild(trackContainer);
             trackList.appendChild(trackLi);
         }
+        trackDiv.appendChild(trackList);
     }
 
     /**

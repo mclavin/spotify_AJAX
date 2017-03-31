@@ -6,6 +6,10 @@ body{
     padding: 0;
 }
 
+header{
+    margin: 4em 20em 3em 20em;
+}
+
 input{
     border-radius: 1em;
     border: none;
