@@ -62,7 +62,6 @@ var Module = (function(){
         let artists = artistRes.responseJSON.artists.items;
         let artistList = document.getElementById("artistList");
         artistList.innerHTML = "";
-        console.log(artists);
         /**
          * loopar genom artistarray som vi hämtade tidigare
          * skriver ut namn, bild, och skapar en div för varje artist
@@ -115,7 +114,6 @@ var Module = (function(){
             for(let i = 0; i < artistNameArr.length; i++){
                 if(artistNameArr[i].nodeValue === this.nextSibling.children[0].innerHTML){
                     this.setAttribute("id", "selectedImg");
-                    console.log(this);
                     let artistId = artistIdArr[i];
 
                     /**
