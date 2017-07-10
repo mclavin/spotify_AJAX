@@ -2,6 +2,10 @@
  * Created by Martin on 3/18/2017.
  */
 var Module = (function(){
+    
+    var auth = $.ajax({
+                url:  `https://accounts.spotify.com/authorize/?client_id=ea1c63975f65414ca61a1c4d5ec97a7e&response_type=code`    
+    })
     /**
      * funktion som skall hämta artister
      */
